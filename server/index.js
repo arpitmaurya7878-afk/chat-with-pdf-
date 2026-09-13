@@ -162,7 +162,7 @@ console.log("Data stored in Qdrant!");
         error: error.message
     });
 }
-
+})
 
 /* ASK QUESTION */
 
