@@ -155,15 +155,13 @@ console.log("Data stored in Qdrant!");
         
 
 
-    } catch (error) {
+  } catch (error) {
+    console.error("UPLOAD ERROR:", error);
 
-        console.log(error)
-
-        res.status(500).send("Something went wrong")
-
-    }
-
-})
+    res.status(500).json({
+        error: error.message
+    });
+}
 
 
 /* ASK QUESTION */
@@ -263,21 +261,20 @@ If the answer is not present in the context, say:
         })
 
 
-    } catch (error) {
+   } catch (error) {
+    console.error("ASK ERROR:", error);
 
-        console.log(error)
-
-        res.status(500).send("Something went wrong",error.message)
-
-    }
-
-})
+    res.status(500).json({
+        error: error.message
+    });
+}
 
 
-app.listen(5000, () => {
+const PORT = process.env.PORT || 5000;
 
-    console.log("server running on port 5000")
-
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`server running on port ${PORT}`);
+});
 })
 
 
