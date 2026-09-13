@@ -172,18 +172,13 @@ app.post('/ask', async (req, res) => {
 
         const question = req.body.question
 
-
         if (!question) {
-
             return res.status(400).send("Question is required")
-
         }
-
 
         /* CREATE QUESTION EMBEDDING */
 
         const questionEmbedding = await createEmbedding(question)
-
 
         /* SEARCH QDRANT */
 
@@ -197,9 +192,7 @@ app.post('/ask', async (req, res) => {
 
         })
 
-
         console.log("QDRANT RESULT:", searchResult)
-
 
         if (
             !searchResult ||
@@ -211,21 +204,17 @@ app.post('/ask', async (req, res) => {
 
         }
 
-
         /* GET RELEVANT CHUNKS */
 
         const relevantChunks = searchResult.points
             .map(point => point.payload?.text)
             .filter(text => text)
 
-
         console.log("RELEVANT CHUNKS:", relevantChunks)
-
 
         /* CREATE CONTEXT */
 
         const context = relevantChunks.join("\n\n")
-
 
         /* ASK GEMINI */
 
@@ -248,11 +237,8 @@ If the answer is not present in the context, say:
 
         })
 
-
         console.log("Gemini response received")
-
         console.log(response.text)
-
 
         res.send({
 
@@ -260,27 +246,25 @@ If the answer is not present in the context, say:
 
         })
 
+    } catch (error) {
 
-   } catch (error) {
-    console.error("ASK ERROR:", error);
+        console.error("ASK ERROR:", error)
 
-    res.status(500).json({
-        error: error.message
-    });
-}
+        res.status(500).json({
+            error: error.message
+        })
 
+    }
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`server running on port ${PORT}`);
-});
 })
 
 
+/* START SERVER */
 
+const PORT = process.env.PORT || 5000
 
+app.listen(PORT, "0.0.0.0", () => {
 
+    console.log(`server running on port ${PORT}`)
 
-
-
+})
